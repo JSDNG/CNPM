@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en-US" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="layout :: head"></head>
+
+<body>
+	<div id="wrapper" class="wrapper clearfix">
+		<header th:replace="layout :: header"></header>
+		<section id="signIn" class="sign">
+			<div class="container">
+				<div class="row">
+					<div class="col-xs-4  col-sm-4  col-md-4 col-xs-offset-4 col-sm-offset-4 col-md-offset-4">
+						<div class="modal-body">
+							<h6>Welcome Back</h6>
+							<div class="sign-form">
+								<form class="mb-0" action="/checklogin" id="login">
+									<div class="form-group">
+										<input type="text" class="form-control" id="email" name="email" placeholder="Email">
+										<span class="form-message"></span>
+									</div>
+									<div class="form-group">
+										<input type="password" class="form-control" id="password" name="password" placeholder="Password">
+										<span class="form-message"></span>
+									</div>
+									<div class="checkbox pull-left">
+										<label>
+											<input type="checkbox">
+											Remember me</label>
+									</div>
+									<div class="pull-right lost-pass">
+										<a href="#">Forget Password?</a>
+									</div>
+						
+									<button type="submit" class="btn btn-primary btn-block">Sign In</button>
+									<p style="color: red" th:text="${ERROR}"></p>
+								</form>
+								<div class="form-links text-center">
+									<a href="register">Create New Account</a>
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- .col-md-12 end -->
+				</div>
+				<!-- .row end -->
+			</div>
+			<!-- .container end -->
+		</section>
+		<!-- #signIn end -->
+
+		<footer th:replace="layout :: footer"></footer>
+
+	</div>
+	<script>
+        
+        document.addEventListener('DOMContentLoaded', function () { 
+   
+        Validator({
+        form: '#login',
+        formGroupSelector: '.form-group',
+        errorSelector: '.form-message',
+        rules: [
+          Validator.isEmail('#email'),
+          Validator.minLength('#password', 6),
+        ],
+      });
+    });  
+    </script>
+    <script src="./js/validator.js"></script>
+	 #wrapper end -->
+
+	<!-- Footer Scripts
+============================================= -->
+	<script src="./js/jquery-2.2.4.min.js"></script>
+	<script src="./js/plugins.js"></script>
+	<script src="./js/functions.js"></script>
+	<script src="./js/validator.js"></script>
+</body>
+
+</html>

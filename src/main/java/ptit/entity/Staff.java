@@ -1,7 +1,7 @@
 package ptit.entity;
 
 import java.io.Serializable;
-import java.math.BigInteger;
+import java.util.Collection;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
@@ -11,12 +11,14 @@ import jakarta.persistence.*;
 @Entity
 @Table(name = "staff")
 public class Staff implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
+
 	@Id
 	@Column(name ="staffID")
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private BigInteger staffID;
+	private Long staffID;
 	
-	@Column(name = "fullname", unique = true, length = 225)
+	@Column(name = "fullname", length = 225)
 	private String fullname;
 	
 	@Column(nullable = false)
@@ -26,24 +28,25 @@ public class Staff implements Serializable{
 	private String phone;
 	
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern ="MM/dd/yyyy")
+	@DateTimeFormat(pattern ="yyyy-MM-dd")
 	private Date birth;
 	
-	@Column(name ="cccd")
+	@Column(name ="cccd", length = 12)
 	private String cccd;
 	
-	@ManyToOne
-	@JoinColumn(name="accountID")
-	private Account accountID;
+//	@OneToOne(cascade = CascadeType.ALL)
+//	@JoinColumn(name = "accountID")
+//	private Account account;
 
+	@OneToMany(fetch = FetchType.LAZY, mappedBy = "staff", cascade = CascadeType.ALL)
+    private Collection<Order> order;
+	
 	public Staff() {
 		
 	}
 
-	
-
-	public Staff(BigInteger staffID, String fullname, Boolean sex, String phone, Date birth, String cccd,
-			Account accountID) {
+	public Staff(Long staffID, String fullname, Boolean sex, String phone, Date birth, String cccd,
+			Account account, Collection<Order> order) {
 		super();
 		this.staffID = staffID;
 		this.fullname = fullname;
@@ -51,16 +54,19 @@ public class Staff implements Serializable{
 		this.phone = phone;
 		this.birth = birth;
 		this.cccd = cccd;
-		this.accountID = accountID;
+		//this.account = account;
+		this.order = order;
 	}
 
 
 
-	public BigInteger getStaffID() {
+	
+
+	public Long getStaffID() {
 		return staffID;
 	}
 
-	public void setStaffID(BigInteger staffID) {
+	public void setStaffID(Long staffID) {
 		this.staffID = staffID;
 	}
 
@@ -96,25 +102,33 @@ public class Staff implements Serializable{
 		this.birth = birth;
 	}
 
+
 	public String getCccd() {
 		return cccd;
 	}
+
 
 	public void setCccd(String cccd) {
 		this.cccd = cccd;
 	}
 
-	public Account getAccountID() {
-		return accountID;
+	public Collection<Order> getOrder() {
+		return order;
 	}
 
-	public void setAccountID(Account accountID) {
-		this.accountID = accountID;
+	public void setOrder(Collection<Order> order) {
+		this.order = order;
 	}
-    
 
-	
-	
-	
-	
+
+//	public Account getAccount() {
+//		return account;
+//	}
+//
+//
+//
+//	public void setAccount(Account account) {
+//		this.account = account;
+//	}
+
 }
