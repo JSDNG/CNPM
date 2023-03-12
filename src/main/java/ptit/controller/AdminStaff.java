@@ -45,37 +45,38 @@ public class AdminStaff {
     }
 	@GetMapping("/admin/addstaff")
 	public String addstaff(ModelMap model) {
-		List<Permission> permissions = permissionService.findAll();
-		model.addAttribute("permissions", permissions);
 		Staff newstaff = new Staff();
-		Account account = new Account();
-		newstaff.setAccount(account);
 		model.addAttribute("staffs", newstaff);
 		model.addAttribute("message", "Staff Add");
 		return"admin/addOrUpdate";
 	}
 	@PostMapping("/admin/saveOrUpdate")
-	public String saveStaff(@Valid @ModelAttribute("staffs") Staff staff, BindingResult result,ModelMap model,
-			Account account, @RequestParam(value ="fullname") String fullname ,@RequestParam(value ="sex", required = false, defaultValue = "false") Boolean sex,
-			@RequestParam(value = "phone") String phone,@RequestParam(value = "birth")@DateTimeFormat(pattern ="yyyy-MM-dd") Date birth,
-			@RequestParam(value ="cccd") String cccd,@RequestParam(value ="email") String email,
+	public String saveStaff(Staff staff,ModelMap model,
+			@RequestParam(value ="fullname") String fullname,
+			@RequestParam(value ="sex", required = false, defaultValue = "false") Boolean sex,
+			@RequestParam(value = "phone") String phone,
+			@RequestParam(value = "birth")@DateTimeFormat(pattern ="yyyy-MM-dd") Date birth,
+			@RequestParam(value ="cccd") String cccd,
+			@RequestParam(value ="mail") String email,
 			@RequestParam(value ="password") String password,
 			@RequestParam(value ="status", required = false,defaultValue = "false") Boolean status,
 			SessionStatus statuss){
+		  
 			Permission permission = new Permission();
-
+			permission.setPermissionID((long) 2);
+			Account account = new Account();
+			
 			staff.setFullname(fullname);
 			staff.setSex(sex);
 			staff.setPhone(phone);
 			staff.setBirth(birth);
 			staff.setCccd(cccd);
-			staff.getAccount().setEmail(email);
-			staff.getAccount().setPassword(password);
-			staff.getAccount().setStatus(status);	
-			staff.getAccount().setPermission(permission);
-		if (result.hasErrors()) {
-		    return "admin/addOrUpdate";
-		  }
+			account.setEmail(email);
+			account.setPassword(password);
+			account.setStatus(status);	
+			account.setPermission(permission);
+			
+			staff.setAccount(account);
 		// save staff to database
 		staffService.save(staff);
 		statuss.setComplete();
