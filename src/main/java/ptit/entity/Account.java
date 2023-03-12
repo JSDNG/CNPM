@@ -26,10 +26,11 @@ public class Account implements Serializable {
 	private Long accountID;
 	
 	@Email(message = "Email không hợp lệ")
+	@NotEmpty(message = "Vui lòng nhập email")
 	@Column(name = "email")
 	private String email;
 	
-	@Size(min = 6, max = 225, message = "Tên nhân viên phải từ 6-225 kí tự")
+	@Size(min = 6, max = 225, message = "Password từ 6-225 kí tự")
 	@NotEmpty(message = "Vui lòng nhập password")
 	@Column(name = "password")
 	private String password;

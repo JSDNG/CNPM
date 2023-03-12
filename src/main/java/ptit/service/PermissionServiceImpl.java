@@ -1,6 +1,7 @@
 package ptit.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,8 +23,8 @@ public class PermissionServiceImpl implements PermissionService{
 		return this.permissionDAO.findAll();
 	}
 	@Override
-	public Permission findByName(String name) {
-		return permissionDAO.findByName(name);
+	public Optional<Permission> findById(Long permissionID) {
+		return permissionDAO.findById(permissionID);
 	}
 
 	

@@ -10,8 +10,8 @@ import ptit.entity.Permission;
 
 @Repository
 public interface PermissionDAO extends JpaRepository<Permission, Long> {
-	@Query("from Permission as u where u.name = :name")
-	Permission findByName(@Param("name") String name);
+//	@Query("from Permission as u where u.permissionID = :permissionID")
+//	Permission findById(@Param("permissionID") String permissionID);
 	
 	List<Permission> findAll();
 

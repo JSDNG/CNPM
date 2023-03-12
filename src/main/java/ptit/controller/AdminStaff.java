@@ -1,11 +1,13 @@
 package ptit.controller;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -14,8 +16,10 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.support.SessionStatus;
 
 import javax.validation.Valid;
+
 import ptit.entity.Account;
 import ptit.entity.Permission;
 import ptit.entity.Staff;
@@ -43,27 +47,38 @@ public class AdminStaff {
 	public String addstaff(ModelMap model) {
 		List<Permission> permissions = permissionService.findAll();
 		model.addAttribute("permissions", permissions);
-		
-		Staff staff = new Staff();
-		model.addAttribute("staffs", staff);
+		Staff newstaff = new Staff();
+		Account account = new Account();
+		newstaff.setAccount(account);
+		model.addAttribute("staffs", newstaff);
 		model.addAttribute("message", "Staff Add");
 		return"admin/addOrUpdate";
 	}
 	@PostMapping("/admin/saveOrUpdate")
 	public String saveStaff(@Valid @ModelAttribute("staffs") Staff staff, BindingResult result,ModelMap model,
-			Account account){
-		
-		if(staff.getStaffID()!= null) {
-			model.addAttribute("message", "Update success!");
-		}else {
-			model.addAttribute("message", "Add success!");
-		}
-		
+			Account account, @RequestParam(value ="fullname") String fullname ,@RequestParam(value ="sex", required = false, defaultValue = "false") Boolean sex,
+			@RequestParam(value = "phone") String phone,@RequestParam(value = "birth")@DateTimeFormat(pattern ="yyyy-MM-dd") Date birth,
+			@RequestParam(value ="cccd") String cccd,@RequestParam(value ="email") String email,
+			@RequestParam(value ="password") String password,
+			@RequestParam(value ="status", required = false,defaultValue = "false") Boolean status,
+			SessionStatus statuss){
+			Permission permission = new Permission();
+
+			staff.setFullname(fullname);
+			staff.setSex(sex);
+			staff.setPhone(phone);
+			staff.setBirth(birth);
+			staff.setCccd(cccd);
+			staff.getAccount().setEmail(email);
+			staff.getAccount().setPassword(password);
+			staff.getAccount().setStatus(status);	
+			staff.getAccount().setPermission(permission);
 		if (result.hasErrors()) {
 		    return "admin/addOrUpdate";
 		  }
 		// save staff to database
 		staffService.save(staff);
+		statuss.setComplete();
 		return"redirect:/admin/staff";
 	}
 	@GetMapping("/admin/updatestaff/{staffID}")
@@ -90,12 +105,6 @@ public class AdminStaff {
 		model.addAttribute("staffs", ls);
 		return"admin/staff";
 	}
-//	@GetMapping("/sortstaff/page")
-//	public String paginate(ModelMap model, @RequestParam("p") Optional<Integer> p) {
-//		Pageable pageable = PageRequest.of(p.orElse(0), 5);
-//		Page<Staff> page = staffService.findAll(pageable);
-//		model.addAttribute("staff", page);
-//		return"staff";
-//	}
+
 	
 }

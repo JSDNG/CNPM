@@ -12,7 +12,6 @@ import ptit.entity.Staff;
 @Repository
 public interface StaffDAO extends JpaRepository<Staff, Long> {
 
-	//List<Staff> findByNameLikeOrderByName(String fullname);
 	Staff save(Staff staff);
 
 	
