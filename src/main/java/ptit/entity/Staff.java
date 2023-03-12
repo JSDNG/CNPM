@@ -1,13 +1,14 @@
 package ptit.entity;
 
 import java.io.Serializable;
-import java.math.BigInteger;
 import java.util.Collection;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "staff")
@@ -20,20 +21,26 @@ public class Staff implements Serializable{
 	@Id
 	@Column(name ="staffID")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private BigInteger staffID;
+	private Long staffID;
 	
+	@Size(min = 1, max = 225, message = "Tên nhân viên phải từ 1-225 kí tự")
+	@NotEmpty(message = "Vui lòng nhập name")
 	@Column(name = "fullname", length = 225)
 	private String fullname;
 	
 	private boolean sex;
 	
+	@Size(min = 9, max = 12, message = "Số điện thoại phải từ 9-12 kí tự")
+	@NotEmpty(message = "Vui lòng nhập số điện thoại")
 	@Column(nullable = false, length = 15)
 	private String phone;
 	
 	@Temporal(TemporalType.DATE)
-	@DateTimeFormat(pattern ="MM/dd/yyyy")
+	@DateTimeFormat(pattern ="yyyy-MM-dd")
 	private Date birth;
 	
+	@Size(min = 12, max = 12, message = "Căn cước công dân 12 kí tự ")
+	@NotEmpty(message = "Vui lòng nhập căn cước công dân")
 	@Column(name ="cccd")
 	private String cccd;
 
@@ -51,22 +58,11 @@ public class Staff implements Serializable{
 		
 	}
 
-	public Staff(BigInteger staffID, String fullname, Boolean sex, String phone, Date birth, String cccd,
-			Account account) {
-		super();
-		this.staffID = staffID;
-		this.fullname = fullname;
-		this.sex = sex;
-		this.phone = phone;
-		this.birth = birth;
-		this.cccd = cccd;
-	}
-
-	public BigInteger getStaffID() {
+	public Long getStaffID() {
 		return staffID;
 	}
 
-	public void setStaffID(BigInteger staffID) {
+	public void setStaffID(Long staffID) {
 		this.staffID = staffID;
 	}
 

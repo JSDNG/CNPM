@@ -32,7 +32,7 @@
 								<td width="100" th:text="${staff.staffID}" />
 								<td th:text="${staff.fullname}" />
 								<td th:text="${staff.account.email}" />
-								<td th:text="${staff.sex} ? 'Male' : 'Female'"/> 
+								<td th:text="${staff.sex} ? 'Female' : 'Male'"/> 
 									
 								<td th:text="${staff.phone}" />
 								<td th:text="${staff.birth}" />
@@ -69,6 +69,7 @@
 		function foo() {
 			return window.location.href = '/admin/addstaff'
 		}
+		document.querySelector('#btn-add').innerHTML = 'Thêm nhân viên';
 	</script>
 </body>
 
